@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sumida - 性別選択</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #f5576c;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #f5576c, #4facfe);
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .gender-button {
+            flex: 1;
+            min-width: 200px;
+            padding: 40px 30px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .gender-button:hover {
+            border-color: #f5576c;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.2);
+        }
+
+        .gender-button.selected {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f5576c 0%, #4facfe 100%);
+            color: white;
+        }
+
+        .gender-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .gender-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .next-button {
+            margin-top: 40px;
+            padding: 15px 50px;
+            background: linear-gradient(90deg, #f5576c, #4facfe);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .next-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-button:hover.active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .gender-options {
+                flex-direction: column;
+            }
+
+            .gender-button {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>性別を選択</h1>
+        <p class="subtitle">あなたに最適なメニューを作成するために必要です</p>
+        <div class="divider"></div>
+        
+        <div class="gender-options">
+            <div class="gender-button" data-gender="male">
+                <div class="gender-icon">♂</div>
+                <div class="gender-label">男性</div>
+            </div>
+            <div class="gender-button" data-gender="female">
+                <div class="gender-icon">♀</div>
+                <div class="gender-label">女性</div>
+            </div>
+        </div>
+
+        <button class="next-button" id="nextButton" onclick="goNext()">次へ</button>
+    </div>
+
+    <script>
+        let selectedGender = null;
+
+        document.querySelectorAll('.gender-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // すべてのボタンから選択状態を解除
+                document.querySelectorAll('.gender-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // クリックされたボタンを選択状態にする
+                this.classList.add('selected');
+                selectedGender = this.getAttribute('data-gender');
+                
+                // 「次へ」ボタンを有効化
+                document.getElementById('nextButton').classList.add('active');
+            });
+        });
+
+        function goNext() {
+            if (selectedGender) {
+                // ここで次の画面に遷移する処理を追加できます
+                // 例: window.location.href = 'next-page.html?gender=' + selectedGender;
+                alert('選択された性別: ' + (selectedGender === 'male' ? '男性' : '女性'));
+                // 次の画面への遷移処理を追加してください
+            }
+        }
+    </script>
+</body>
+</html>
