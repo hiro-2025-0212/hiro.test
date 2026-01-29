@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>種目一覧 - sumida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 24px 16px;
+        }
+
+        .app {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #f5f5f5;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: #ebebeb;
+            color: #333;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* フィルター */
+        .filter-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .filter-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        /* 部位セクション */
+        .part-section {
+            margin-bottom: 32px;
+        }
+
+        .part-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .part-icon {
+            font-size: 1.5rem;
+        }
+
+        .part-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .part-count {
+            font-size: 0.85rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 2px 10px;
+            border-radius: 999px;
+        }
+
+        /* 種目カード */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .exercise-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .exercise-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .exercise-card.hidden {
+            display: none;
+        }
+
+        .exercise-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .exercise-subparts {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .exercise-params {
+            display: flex;
+            gap: 16px;
+        }
+
+        .exercise-param {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .param-label-small {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .param-stars-small {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star-small {
+            font-size: 0.85rem;
+            color: #ddd;
+        }
+
+        .star-small.filled.hypertrophy {
+            color: #4facfe;
+        }
+
+        .star-small.filled.difficulty {
+            color: #f5576c;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <header class="app-header">
+            <div class="logo">sumida</div>
+            <a href="javascript:history.back()" class="back-link">← 戻る</a>
+        </header>
+
+        <h1 class="page-title">種目一覧</h1>
+        <p class="page-subtitle">部位ごとの種目を確認できます。クリックで詳細を表示。</p>
+
+        <div class="filter-section">
+            <div class="filter-title">フィルター</div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">難易度：</span>
+                    <select id="difficultyFilter" class="filter-select">
+                        <option value="all">すべて</option>
+                        <option value="1">1（初心者向け）</option>
+                        <option value="2">2以下</option>
+                        <option value="3">3以下</option>
+                        <option value="4">4以下</option>
+                        <option value="5">5以下</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">筋肥大効果：</span>
+                    <select id="hypertrophyFilter" class="filter-select">
+                        <option value="all">すべて</option>
+                        <option value="3">3以上</option>
+                        <option value="4">4以上</option>
+                        <option value="5">5のみ</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="exerciseList"></div>
+    </main>
+
+    <script>
+        // 種目データ（exercise.htmlと同じ）
+        const exercises = {
+            "bench-press": { id: "bench-press", name: "ベンチプレス", part: "胸", subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"], difficulty: 3, hypertrophy: 5 },
+            "dumbbell-press": { id: "dumbbell-press", name: "ダンベルプレス", part: "胸", subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"], difficulty: 2, hypertrophy: 4 },
+            "chest-press": { id: "chest-press", name: "チェストプレス", part: "胸", subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"], difficulty: 1, hypertrophy: 3 },
+            "incline-press": { id: "incline-press", name: "インクラインプレス", part: "胸", subParts: ["大胸筋上部", "三角筋前部", "上腕三頭筋"], difficulty: 3, hypertrophy: 4 },
+            "push-up": { id: "push-up", name: "プッシュアップ", part: "胸", subParts: ["大胸筋", "三角筋前部", "上腕三頭筋", "体幹"], difficulty: 2, hypertrophy: 2 },
+            "lat-pulldown": { id: "lat-pulldown", name: "ラットプルダウン", part: "背中", subParts: ["広背筋", "大円筋", "上腕二頭筋"], difficulty: 2, hypertrophy: 4 },
+            "seated-row": { id: "seated-row", name: "シーテッドロー", part: "背中", subParts: ["広背筋", "僧帽筋中部", "菱形筋", "上腕二頭筋"], difficulty: 2, hypertrophy: 4 },
+            "one-hand-row": { id: "one-hand-row", name: "ワンハンドロー", part: "背中", subParts: ["広背筋", "菱形筋", "上腕二頭筋"], difficulty: 2, hypertrophy: 4 },
+            "shoulder-press": { id: "shoulder-press", name: "ショルダープレス", part: "肩", subParts: ["三角筋前部・中部", "上腕三頭筋", "僧帽筋上部"], difficulty: 3, hypertrophy: 4 },
+            "arm-curl": { id: "arm-curl", name: "アームカール", part: "腕", subParts: ["上腕二頭筋", "前腕屈筋群"], difficulty: 1, hypertrophy: 3 },
+            "triceps-extension": { id: "triceps-extension", name: "トライセプスエクステンション", part: "腕", subParts: ["上腕三頭筋"], difficulty: 2, hypertrophy: 3 },
+            "squat": { id: "squat", name: "スクワット", part: "脚", subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス", "体幹"], difficulty: 4, hypertrophy: 5 },
+            "bulgarian-squat": { id: "bulgarian-squat", name: "ブルガリアンスクワット", part: "脚", subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス"], difficulty: 3, hypertrophy: 4 },
+            "leg-press": { id: "leg-press", name: "レッグプレス", part: "脚", subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス"], difficulty: 1, hypertrophy: 4 },
+            "rdl": { id: "rdl", name: "RDL（ルーマニアンデッドリフト）", part: "脚", subParts: ["ハムストリングス", "大臀筋", "脊柱起立筋"], difficulty: 4, hypertrophy: 4 },
+            "deadlift": { id: "deadlift", name: "デッドリフト", part: "脚", subParts: ["脊柱起立筋", "大臀筋", "ハムストリングス", "広背筋"], difficulty: 5, hypertrophy: 5 },
+            "leg-curl": { id: "leg-curl", name: "レッグカール", part: "脚", subParts: ["ハムストリングス"], difficulty: 1, hypertrophy: 3 },
+            "hip-thrust": { id: "hip-thrust", name: "ヒップスラスト", part: "脚", subParts: ["大臀筋", "ハムストリングス"], difficulty: 2, hypertrophy: 4 },
+            "plank": { id: "plank", name: "プランク", part: "腹", subParts: ["腹直筋", "腹横筋", "脊柱起立筋"], difficulty: 1, hypertrophy: 2 },
+            "side-plank": { id: "side-plank", name: "サイドプランク", part: "腹", subParts: ["腹斜筋", "腹横筋", "中臀筋"], difficulty: 2, hypertrophy: 2 },
+            "crunch": { id: "crunch", name: "クランチ", part: "腹", subParts: ["腹直筋上部"], difficulty: 1, hypertrophy: 2 },
+            "leg-raise": { id: "leg-raise", name: "レッグレイズ", part: "腹", subParts: ["腹直筋下部", "腸腰筋"], difficulty: 2, hypertrophy: 3 },
+            "dead-bug": { id: "dead-bug", name: "デッドバグ", part: "腹", subParts: ["腹横筋", "腹直筋", "体幹全体"], difficulty: 2, hypertrophy: 2 }
+        };
+
+        const partOrder = ["胸", "背中", "肩", "腕", "脚", "腹"];
+        const partIcons = {
+            "胸": "💪",
+            "背中": "🔙",
+            "肩": "🎯",
+            "腕": "💪",
+            "脚": "🦵",
+            "腹": "🔥"
+        };
+
+        function renderStars(value, type) {
+            return [1,2,3,4,5].map(i =>
+                `<span class="star-small ${i <= value ? 'filled ' + type : ''}">★</span>`
+            ).join('');
+        }
+
+        function renderExerciseList() {
+            const difficultyFilter = document.getElementById('difficultyFilter').value;
+            const hypertrophyFilter = document.getElementById('hypertrophyFilter').value;
+
+            const exercisesByPart = {};
+            partOrder.forEach(part => exercisesByPart[part] = []);
+
+            Object.values(exercises).forEach(ex => {
+                // フィルター適用
+                if (difficultyFilter !== 'all' && ex.difficulty > parseInt(difficultyFilter)) return;
+                if (hypertrophyFilter !== 'all' && ex.hypertrophy < parseInt(hypertrophyFilter)) return;
+
+                if (exercisesByPart[ex.part]) {
+                    exercisesByPart[ex.part].push(ex);
+                }
+            });
+
+            const listEl = document.getElementById('exerciseList');
+            listEl.innerHTML = partOrder.map(part => {
+                const exList = exercisesByPart[part];
+                if (exList.length === 0) return '';
+
+                return `
+                    <section class="part-section">
+                        <div class="part-header">
+                            <span class="part-icon">${partIcons[part]}</span>
+                            <h2 class="part-title">${part}</h2>
+                            <span class="part-count">${exList.length}種目</span>
+                        </div>
+                        <div class="exercise-grid">
+                            ${exList.map(ex => `
+                                <a href="exercise.html?id=${ex.id}" class="exercise-card">
+                                    <div class="exercise-name">${ex.name}</div>
+                                    <div class="exercise-subparts">${ex.subParts.join('・')}</div>
+                                    <div class="exercise-params">
+                                        <div class="exercise-param">
+                                            <span class="param-label-small">筋肥大</span>
+                                            <div class="param-stars-small">${renderStars(ex.hypertrophy, 'hypertrophy')}</div>
+                                        </div>
+                                        <div class="exercise-param">
+                                            <span class="param-label-small">難易度</span>
+                                            <div class="param-stars-small">${renderStars(ex.difficulty, 'difficulty')}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+            }).join('');
+        }
+
+        // フィルター変更時に再描画
+        document.getElementById('difficultyFilter').addEventListener('change', renderExerciseList);
+        document.getElementById('hypertrophyFilter').addEventListener('change', renderExerciseList);
+
+        // 初期表示
+        renderExerciseList();
+    </script>
+</body>
+</html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sumida - ホーム</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sumida - 筋トレ診断</title>
     <style>
         * {
             margin: 0;
@@ -12,138 +12,1150 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            color: #222;
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            padding: 24px 16px;
         }
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 60px 40px;
-            max-width: 800px;
-            width: 90%;
-            text-align: center;
-            animation: fadeIn 1s ease-in;
+        .app {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 900px;
+            width: 100%;
+            padding: 0;
+            overflow: hidden;
+            animation: fadeIn 0.7s ease-out;
+            border: 1px solid #e8e8e8;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
-            font-size: 3.5rem;
-            color: #f5576c;
-            margin-bottom: 20px;
+        .app-header {
+            background: #f8f9fa;
+            padding: 20px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .progress {
+            font-size: 0.9rem;
+            color: #667eea;
+            background: #e8ecff;
+            padding: 6px 14px;
+            border-radius: 999px;
+        }
+
+        .progress span {
             font-weight: 700;
-            letter-spacing: 2px;
         }
 
-        .subtitle {
-            font-size: 1.3rem;
+        .app-body {
+            padding: 32px 28px 28px;
+        }
+
+        .screen-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .screen-subtitle {
+            font-size: 1rem;
             color: #666;
-            margin-bottom: 40px;
-            font-weight: 300;
+            margin-bottom: 24px;
         }
 
-        .divider {
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, #f5576c, #4facfe);
-            margin: 30px auto;
-            border-radius: 2px;
+        /* ヒーローセクション */
+        .hero {
+            text-align: center;
+            padding: 20px 0;
         }
 
-        .content {
-            margin-top: 40px;
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
         }
 
-        p {
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .hero-description {
             font-size: 1.1rem;
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             line-height: 1.8;
         }
 
-        .contact-info {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
         }
 
-        .contact-info p {
-            color: #888;
-            font-size: 0.95rem;
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #e8ecff;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: #555;
+            border: 1px solid #d0d8ff;
         }
 
-        .start-button {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 15px 40px;
-            background: linear-gradient(90deg, #f5576c, #4facfe);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
+        .feature-icon {
             font-size: 1.2rem;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .start-button:hover {
+        /* 選択カード（画像付き） */
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .options.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .options.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .option-card {
+            border-radius: 16px;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .option-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .option-card.selected {
+            border-color: #667eea;
+            border-width: 3px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .option-card.selected .option-content {
+            background: #e8ecff;
+            color: #333;
+        }
+
+        .option-card.selected .option-label {
+            color: #667eea;
+        }
+
+        .option-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .option-content {
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .option-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .option-description {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* ボタン */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            gap: 12px;
+        }
+
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-primary:not(:disabled):hover {
+            background: #5569d6;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 結果画面 */
+        .result-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .result-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .result-subtitle {
+            color: #666;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .result-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .result-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-card-icon {
+            font-size: 1.2rem;
+        }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .day-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .day-title {
+            font-weight: 700;
+            color: #222;
+        }
+
+        .day-badge {
+            background: #667eea;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .exercise-list {
+            list-style: none;
+        }
+
+        .exercise-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .exercise-list li:last-child {
+            border-bottom: none;
+        }
+
+        .exercise-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .exercise-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .exercise-list-btn {
+            display: inline-block;
+            background: #667eea;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .exercise-list-btn:hover {
+            background: #5569d6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .cardio-box {
+            background: #e8ecff;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #d0d8ff;
+        }
+
+        .cardio-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+
+        .cardio-label {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 40px 30px;
+            .app-body {
+                padding: 24px 18px 20px;
             }
 
-            h1 {
-                font-size: 2.5rem;
+            .screen-title, .hero-title {
+                font-size: 1.5rem;
             }
 
-            .subtitle {
-                font-size: 1.1rem;
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .options.two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .options.three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>sumida</h1>
-        <p class="subtitle">あなた専用の筋トレメニュー管理</p>
-        <div class="divider"></div>
-        
-        <div class="content">
-            <p>
-                一人ひとりの目標、体力レベル、ライフスタイルに合わせて、
-                最適な筋トレメニューを提案・管理するサービスです。
-            </p>
-            <p>
-                あなたのペースで、あなただけのトレーニングプログラムで、
-                理想の体を手に入れましょう。
-            </p>
-            <a href="gender.html" class="start-button">始める</a>
-        </div>
+    <main class="app">
+        <header class="app-header">
+            <div class="logo">sumida</div>
+            <div class="progress" id="progressText">START</div>
+        </header>
 
-        <div class="contact-info">
-            <p>© 2024 sumida. All rights reserved.</p>
+        <div class="app-body">
+            <section id="screen"></section>
+
+            <div class="buttons">
+                <button class="btn-secondary" id="backButton" type="button" style="visibility: hidden;">
+                    ← 戻る
+                </button>
+                <button class="btn-primary" id="nextButton" type="button">
+                    はじめる →
+                </button>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <script>
+        // ====== 状態 ======
+        const steps = ['welcome', 'sex', 'goal', 'frequency', 'environment', 'cardio', 'result'];
+        let currentStepIndex = 0;
+
+        const userInput = {
+            sex: null,
+            goal: null,
+            frequency: null,
+            environment: null,
+            cardioPref: null,
+        };
+
+        // ====== 状態の保存・復元 ======
+        function saveState() {
+            const state = { stepIndex: currentStepIndex, input: userInput };
+            localStorage.setItem('diagnosisState', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('diagnosisState');
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    if (state.stepIndex === steps.indexOf('result')) {
+                        currentStepIndex = state.stepIndex;
+                        Object.assign(userInput, state.input);
+                        return true;
+                    }
+                } catch (e) {}
+            }
+            return false;
+        }
+
+        function clearState() {
+            localStorage.removeItem('diagnosisState');
+        }
+
+        const screenEl = document.getElementById('screen');
+        const progressTextEl = document.getElementById('progressText');
+        const backButton = document.getElementById('backButton');
+        const nextButton = document.getElementById('nextButton');
+
+        // ====== 画像URL ======
+        const images = {
+            hero: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+            // 性別選択
+            male: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80",
+            female: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=400&q=80",
+            // 目標選択
+            diet: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80",
+            muscle: "https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?w=400&q=80",
+            health: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80",
+            // 頻度選択
+            freq2: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&q=80",
+            freq3: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+            freq4: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+            freq5: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80",
+            // 環境選択
+            gym: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=80",
+            home: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80",
+            both: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=400&q=80",
+            // 有酸素選択
+            cardioLow: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+            cardioMed: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=400&q=80",
+            cardioHigh: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=400&q=80",
+        };
+
+        // ====== ヘルパー ======
+        function setProgress() {
+            const stepId = steps[currentStepIndex];
+            const isResult = stepId === 'result';
+            const visibleIndex = Math.min(currentStepIndex, 6);
+            progressTextEl.innerHTML = stepId === 'welcome' ? 'START' :
+                isResult ? '&#10003; 完了' : `STEP <span>${visibleIndex}</span> / 6`;
+            backButton.style.visibility = currentStepIndex === 0 ? 'hidden' : 'visible';
+        }
+
+        function setNextButtonEnabled(enabled, label) {
+            nextButton.disabled = !enabled;
+            if (label) nextButton.textContent = label;
+        }
+
+        function render() {
+            const stepId = steps[currentStepIndex];
+            setProgress();
+
+            if (stepId === 'welcome') renderWelcome();
+            else if (stepId === 'sex') renderSex();
+            else if (stepId === 'goal') renderGoal();
+            else if (stepId === 'frequency') renderFrequency();
+            else if (stepId === 'environment') renderEnvironment();
+            else if (stepId === 'cardio') renderCardio();
+            else if (stepId === 'result') renderResult();
+        }
+
+        // ====== 画面ごとの描画 ======
+        function renderWelcome() {
+            screenEl.innerHTML = `
+                <div class="hero">
+                    <img src="${images.hero}" alt="ジムの風景" class="hero-image" />
+                    <h1 class="hero-title">あなた専用の筋トレメニューを提案</h1>
+                    <p class="hero-description">
+                        6つの質問に答えるだけで、<br>
+                        あなたに最適なトレーニングプランを自動生成します
+                    </p>
+                    <div class="features">
+                        <div class="feature">
+                            <span class="feature-icon">&#9201;</span>
+                            <span>約1分で完了</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">&#128274;</span>
+                            <span>登録不要</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">&#127970;</span>
+                            <span>ジム・自宅対応</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            setNextButtonEnabled(true, '診断をはじめる →');
+        }
+
+        function renderSex() {
+            screenEl.innerHTML = `
+                <h2 class="screen-title">あなたの性別を教えてください</h2>
+                <p class="screen-subtitle">回復速度や有酸素量の目安が変わるため、プラン作成に必要です</p>
+                <div class="options two-col" id="options">
+                    <div class="option-card" data-value="male">
+                        <img src="${images.male}" alt="男性" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">男性</div>
+                            <div class="option-description">筋力アップ寄りのボリュームで調整</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="female">
+                        <img src="${images.female}" alt="女性" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">女性</div>
+                            <div class="option-description">ダイエット目的の場合、有酸素を自動調整</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachOptionHandlers('sex', ['male', 'female']);
+        }
+
+        function renderGoal() {
+            screenEl.innerHTML = `
+                <h2 class="screen-title">いちばんの目的は？</h2>
+                <p class="screen-subtitle">回数・セット数・休憩時間の設定に反映されます</p>
+                <div class="options three-col" id="options">
+                    <div class="option-card" data-value="diet">
+                        <img src="${images.diet}" alt="ダイエット" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#128293; ダイエット</div>
+                            <div class="option-description">脂肪燃焼を重視したプラン</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="muscle">
+                        <img src="${images.muscle}" alt="筋肉増加" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#128170; 筋肉増加</div>
+                            <div class="option-description">筋肥大を優先したプラン</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="health">
+                        <img src="${images.health}" alt="健康維持" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#10084; 健康・体力</div>
+                            <div class="option-description">無理なく続けられるプラン</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachOptionHandlers('goal', ['diet', 'muscle', 'health']);
+        }
+
+        function renderFrequency() {
+            screenEl.innerHTML = `
+                <h2 class="screen-title">週に何回トレーニングできますか？</h2>
+                <p class="screen-subtitle">回数に応じて分割プランを組み立てます</p>
+                <div class="options" id="options">
+                    <div class="option-card" data-value="2">
+                        <img src="${images.freq2}" alt="週2回" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">週2回</div>
+                            <div class="option-description">全身A/Bのシンプルプラン</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="3">
+                        <img src="${images.freq3}" alt="週3回" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">週3回</div>
+                            <div class="option-description">上半身/下半身+腹/上半身+腕</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="4">
+                        <img src="${images.freq4}" alt="週4回" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">週4回</div>
+                            <div class="option-description">上下分割×2のバランス型</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="5">
+                        <img src="${images.freq5}" alt="週5回" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">週5回</div>
+                            <div class="option-description">4分割+補助のハイボリューム</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachOptionHandlers('frequency', ['2', '3', '4', '5'], true);
+        }
+
+        function renderEnvironment() {
+            screenEl.innerHTML = `
+                <h2 class="screen-title">主なトレーニング環境は？</h2>
+                <p class="screen-subtitle">環境に合った種目を優先的に提案します</p>
+                <div class="options three-col" id="options">
+                    <div class="option-card" data-value="gym">
+                        <img src="${images.gym}" alt="ジム" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#127947; ジムだけ</div>
+                            <div class="option-description">マシン・フリーウエイト中心</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="home">
+                        <img src="${images.home}" alt="自宅" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#127968; 家だけ</div>
+                            <div class="option-description">自重+ダンベルで完結</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="both">
+                        <img src="${images.both}" alt="両方" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#128260; どちらも</div>
+                            <div class="option-description">柔軟にミックス</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachOptionHandlers('environment', ['gym', 'home', 'both']);
+        }
+
+        function renderCardio() {
+            screenEl.innerHTML = `
+                <h2 class="screen-title">有酸素運動の希望量は？</h2>
+                <p class="screen-subtitle">女性×ダイエットの場合、自動で1段階多めに調整します</p>
+                <div class="options three-col" id="options">
+                    <div class="option-card" data-value="low">
+                        <img src="${images.cardioLow}" alt="少なめ" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#128694; 少なめ</div>
+                            <div class="option-description">最低限の有酸素</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="medium">
+                        <img src="${images.cardioMed}" alt="ほどほど" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#127939; ほどほど</div>
+                            <div class="option-description">バランス重視</div>
+                        </div>
+                    </div>
+                    <div class="option-card" data-value="high">
+                        <img src="${images.cardioHigh}" alt="多め" class="option-image" />
+                        <div class="option-content">
+                            <div class="option-label">&#127941; 多め</div>
+                            <div class="option-description">しっかり脂肪燃焼</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            attachOptionHandlers('cardioPref', ['low', 'medium', 'high']);
+        }
+
+        function renderResult() {
+            if (!userInput.sex || !userInput.goal || !userInput.frequency || !userInput.environment || !userInput.cardioPref) {
+                currentStepIndex = 0;
+                render();
+                return;
+            }
+
+            saveState();
+            const plan = generatePlan(userInput);
+
+            const sexLabel = userInput.sex === 'male' ? '男性' : '女性';
+            const goalLabel = userInput.goal === 'diet' ? 'ダイエット' : userInput.goal === 'muscle' ? '筋肉増加' : '健康・体力';
+            const envLabel = userInput.environment === 'gym' ? 'ジム' : userInput.environment === 'home' ? '自宅' : 'ジム＋自宅';
+            const cardioTierLabel = plan.cardioPlan.tier === 'low' ? '少' : plan.cardioPlan.tier === 'medium' ? '中' : '多';
+
+            screenEl.innerHTML = `
+                <div class="result-header">
+                    <h2 class="result-title">&#127881; あなた専用プランが完成しました！</h2>
+                    <p class="result-subtitle">8〜12週間続けて、変化を実感しましょう</p>
+                </div>
+
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-card-title">
+                            <span class="result-card-icon">&#128203;</span>
+                            あなたの条件
+                        </div>
+                        <ul class="summary-list">
+                            <li><span class="summary-label">性別</span><span class="summary-value">${sexLabel}</span></li>
+                            <li><span class="summary-label">目的</span><span class="summary-value">${goalLabel}</span></li>
+                            <li><span class="summary-label">頻度</span><span class="summary-value">週${userInput.frequency}回</span></li>
+                            <li><span class="summary-label">環境</span><span class="summary-value">${envLabel}</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-card-title">
+                            <span class="result-card-icon">&#127939;</span>
+                            有酸素プラン
+                        </div>
+                        <div class="cardio-box">
+                            <div class="cardio-value">週${plan.cardioPlan.sessionsPerWeek}回</div>
+                            <div class="cardio-label">${plan.cardioPlan.minutesRange}分 / 回（${cardioTierLabel}）</div>
+                        </div>
+                    </div>
+
+                    <div class="result-card full-width">
+                        <div class="result-card-title">
+                            <span class="result-card-icon">&#128170;</span>
+                            週間メニュー（${plan.splitType}）
+                        </div>
+                        ${plan.days.map(day => `
+                            <div class="day-card">
+                                <div class="day-header">
+                                    <span class="day-title">${day.title}</span>
+                                    <span class="day-badge">${day.focus}</span>
+                                </div>
+                                <ul class="exercise-list">
+                                    ${day.exercises.map(ex => `
+                                        <li>${linkifyExerciseName(ex.name)} <span style="color:#888;">（${ex.sets}セット × ${ex.reps}回）</span></li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="result-card full-width" style="text-align: center; padding: 24px;">
+                        <a href="exercise-list.html" class="exercise-list-btn">
+                            &#128218; 種目一覧を見る
+                        </a>
+                        <p style="margin-top: 12px; font-size: 0.85rem; color: #666;">
+                            全${Object.keys(exerciseNameToId).length}種目の詳細・パラメータを確認できます
+                        </p>
+                    </div>
+                </div>
+            `;
+            setNextButtonEnabled(true, '条件を変更して再診断する');
+        }
+
+        function attachOptionHandlers(field, allowedValues, castToNumber = false) {
+            const optionsContainer = document.getElementById('options');
+            if (!optionsContainer) return;
+
+            const cards = Array.from(optionsContainer.querySelectorAll('.option-card'));
+
+            function updateSelection(value) {
+                cards.forEach(c => c.classList.remove('selected'));
+                const selectedCard = cards.find(c => c.getAttribute('data-value') === value);
+                if (selectedCard) selectedCard.classList.add('selected');
+
+                userInput[field] = castToNumber ? Number(value) : value;
+                setNextButtonEnabled(true, '次へ →');
+            }
+
+            const currentValue = userInput[field];
+            if (currentValue != null) {
+                const v = castToNumber ? String(currentValue) : currentValue;
+                if (allowedValues.includes(v)) updateSelection(v);
+            } else {
+                setNextButtonEnabled(false, '選択してください');
+            }
+
+            cards.forEach(card => {
+                const value = card.getAttribute('data-value');
+                if (!allowedValues.includes(value)) return;
+                card.addEventListener('click', () => updateSelection(value));
+            });
+        }
+
+        // ====== プラン生成ロジック ======
+        function generatePlan(input) {
+            let splitType = '';
+            let days = [];
+            const baseSetRest = getBaseSetRest(input.goal);
+            const { goal, environment: env } = input;
+
+            // 種目を選択してフォーマット（代替種目付き）
+            function pickExercise(part, excludeIds = [], isAlt = false) {
+                const primaryId = selectExercise(part, goal, env, excludeIds);
+                if (!primaryId) return null;
+
+                const primary = exerciseData[primaryId];
+                const altId = selectAlternative(primaryId, goal, env);
+
+                if (altId && !isAlt) {
+                    const alt = exerciseData[altId];
+                    return { name: `${primary.name} / ${alt.name}`, id: primaryId, altId };
+                }
+                return { name: primary.name, id: primaryId };
+            }
+
+            // 種目名のみを返す
+            function getName(picked) {
+                return picked ? picked.name : '種目なし';
+            }
+
+            if (input.frequency === 2) {
+                splitType = '全身A / 全身B';
+                const chest1 = pickExercise('胸');
+                const back1 = pickExercise('背中');
+                const leg1 = pickExercise('脚');
+                const ab1 = pickExercise('腹');
+
+                const chest2 = pickExercise('胸', chest1 ? [chest1.id] : []);
+                const back2 = pickExercise('背中', back1 ? [back1.id] : []);
+                const leg2 = pickExercise('脚', leg1 ? [leg1.id] : []);
+                const ab2 = pickExercise('腹', ab1 ? [ab1.id] : []);
+
+                days = [
+                    { title: 'Day1：全身A', focus: '全身', exercises: [
+                        baseExercise(getName(chest1), baseSetRest),
+                        baseExercise(getName(back1), baseSetRest),
+                        baseExercise(getName(leg1), baseSetRest),
+                        baseExercise(getName(ab1), baseSetRest, '30〜45秒'),
+                    ]},
+                    { title: 'Day2：全身B', focus: '全身', exercises: [
+                        baseExercise(getName(chest2), baseSetRest),
+                        baseExercise(getName(back2), baseSetRest),
+                        baseExercise(getName(leg2), baseSetRest),
+                        baseExercise(getName(ab2), baseSetRest),
+                    ]},
+                ];
+            } else if (input.frequency === 3) {
+                splitType = '3分割';
+                const chest1 = pickExercise('胸');
+                const chest2 = pickExercise('胸', chest1 ? [chest1.id] : [], true);
+                const back1 = pickExercise('背中');
+                const back2 = pickExercise('背中', back1 ? [back1.id] : [], true);
+                const leg1 = pickExercise('脚');
+                const leg2 = pickExercise('脚', leg1 ? [leg1.id] : [], true);
+                const ab1 = pickExercise('腹');
+                const ab2 = pickExercise('腹', ab1 ? [ab1.id] : [], true);
+                const arm1 = pickExercise('腕');
+                const arm2 = pickExercise('腕', arm1 ? [arm1.id] : [], true);
+
+                days = [
+                    { title: 'Day1：上半身', focus: '胸＋背中', exercises: [
+                        baseExercise(getName(chest1), baseSetRest),
+                        baseExercise(getName(chest2), baseSetRest),
+                        baseExercise(getName(back1), baseSetRest),
+                        baseExercise(getName(back2), baseSetRest),
+                    ]},
+                    { title: 'Day2：下半身＋腹', focus: '脚＋体幹', exercises: [
+                        baseExercise(getName(leg1), baseSetRest),
+                        baseExercise(getName(leg2), baseSetRest),
+                        baseExercise(getName(ab1), baseSetRest, '30〜45秒'),
+                        baseExercise(getName(ab2), baseSetRest),
+                    ]},
+                    { title: 'Day3：上半身＋腕', focus: '胸背中腕', exercises: [
+                        baseExercise(getName(pickExercise('胸', [], true)), baseSetRest),
+                        baseExercise(getName(pickExercise('背中', [], true)), baseSetRest),
+                        baseExercise(getName(arm1), baseSetRest),
+                        baseExercise(getName(arm2), baseSetRest),
+                    ]},
+                ];
+            } else if (input.frequency === 4) {
+                splitType = '上下分割×2';
+                const chest1 = pickExercise('胸');
+                const chest2 = pickExercise('胸', chest1 ? [chest1.id] : [], true);
+                const back1 = pickExercise('背中');
+                const back2 = pickExercise('背中', back1 ? [back1.id] : [], true);
+                const shoulder = pickExercise('肩');
+                const arm1 = pickExercise('腕');
+                const arm2 = pickExercise('腕', arm1 ? [arm1.id] : [], true);
+                const leg1 = pickExercise('脚');
+                const leg2 = pickExercise('脚', leg1 ? [leg1.id] : [], true);
+                const leg3 = pickExercise('脚', [leg1?.id, leg2?.id].filter(Boolean), true);
+                const leg4 = pickExercise('脚', [leg1?.id, leg2?.id, leg3?.id].filter(Boolean), true);
+                const ab1 = pickExercise('腹');
+
+                days = [
+                    { title: 'Day1：上半身A', focus: '胸＋背中', exercises: [
+                        baseExercise(getName(chest1), baseSetRest),
+                        baseExercise(getName(back1), baseSetRest),
+                        baseExercise(getName(chest2), baseSetRest),
+                    ]},
+                    { title: 'Day2：下半身A', focus: '脚＋体幹', exercises: [
+                        baseExercise(getName(leg1), baseSetRest),
+                        baseExercise(getName(leg2), baseSetRest),
+                        baseExercise(getName(ab1), baseSetRest, '30〜45秒'),
+                    ]},
+                    { title: 'Day3：上半身B', focus: '肩＋腕', exercises: [
+                        baseExercise(getName(shoulder), baseSetRest),
+                        baseExercise(getName(back2), baseSetRest),
+                        baseExercise(getName(arm1) + ' / ' + getName(arm2), baseSetRest),
+                    ]},
+                    { title: 'Day4：下半身B', focus: 'ヒップ', exercises: [
+                        baseExercise(getName(leg3), baseSetRest),
+                        baseExercise(getName(leg4), baseSetRest),
+                        baseExercise(getName(pickExercise('脚', [], true)), baseSetRest),
+                    ]},
+                ];
+            } else {
+                splitType = '5分割';
+                const baseFour = generatePlan({ ...input, frequency: 4 });
+                const ab1 = pickExercise('腹');
+                const ab2 = pickExercise('腹', ab1 ? [ab1.id] : [], true);
+                const arm1 = pickExercise('腕');
+                const arm2 = pickExercise('腕', arm1 ? [arm1.id] : [], true);
+
+                days = [...baseFour.days, {
+                    title: 'Day5：補助', focus: '腹＋腕', exercises: [
+                        baseExercise(getName(ab1) + '＋' + getName(ab2), baseSetRest, '30〜45秒'),
+                        baseExercise(getName(pickExercise('腹', [ab1?.id, ab2?.id].filter(Boolean), true)), baseSetRest),
+                        baseExercise(getName(arm1), baseSetRest),
+                        baseExercise(getName(arm2), baseSetRest),
+                    ]
+                }];
+            }
+
+            return { splitType, days, cardioPlan: getCardioPlan(input) };
+        }
+
+        function getBaseSetRest(goal) {
+            if (goal === 'diet') return { sets: '2〜4', reps: '8〜15', rest: 60 };
+            if (goal === 'muscle') return { sets: '3〜5', reps: '6〜12', rest: 90 };
+            return { sets: '2〜3', reps: '10〜15', rest: 60 };
+        }
+
+        function baseExercise(name, base, overrideReps) {
+            return { name, sets: base.sets, reps: overrideReps || base.reps, rest: base.rest };
+        }
+
+        // 種目データ（難易度・筋肥大効果付き）
+        const exerciseData = {
+            "bench-press": { name: "ベンチプレス", part: "胸", difficulty: 3, hypertrophy: 5, env: ["gym"] },
+            "dumbbell-press": { name: "ダンベルプレス", part: "胸", difficulty: 2, hypertrophy: 4, env: ["gym", "home"] },
+            "chest-press": { name: "チェストプレス", part: "胸", difficulty: 1, hypertrophy: 3, env: ["gym"] },
+            "incline-press": { name: "インクラインプレス", part: "胸", difficulty: 3, hypertrophy: 4, env: ["gym"] },
+            "push-up": { name: "プッシュアップ", part: "胸", difficulty: 2, hypertrophy: 2, env: ["home", "gym"] },
+            "lat-pulldown": { name: "ラットプルダウン", part: "背中", difficulty: 2, hypertrophy: 4, env: ["gym"] },
+            "seated-row": { name: "シーテッドロー", part: "背中", difficulty: 2, hypertrophy: 4, env: ["gym"] },
+            "one-hand-row": { name: "ワンハンドロー", part: "背中", difficulty: 2, hypertrophy: 4, env: ["gym", "home"] },
+            "shoulder-press": { name: "ショルダープレス", part: "肩", difficulty: 3, hypertrophy: 4, env: ["gym", "home"] },
+            "arm-curl": { name: "アームカール", part: "腕", difficulty: 1, hypertrophy: 3, env: ["gym", "home"] },
+            "triceps-extension": { name: "トライセプスエクステンション", part: "腕", difficulty: 2, hypertrophy: 3, env: ["gym", "home"] },
+            "squat": { name: "スクワット", part: "脚", difficulty: 4, hypertrophy: 5, env: ["gym"] },
+            "bulgarian-squat": { name: "ブルガリアンスクワット", part: "脚", difficulty: 3, hypertrophy: 4, env: ["gym", "home"] },
+            "leg-press": { name: "レッグプレス", part: "脚", difficulty: 1, hypertrophy: 4, env: ["gym"] },
+            "rdl": { name: "RDL", part: "脚", difficulty: 4, hypertrophy: 4, env: ["gym", "home"] },
+            "deadlift": { name: "デッドリフト", part: "脚", difficulty: 5, hypertrophy: 5, env: ["gym"] },
+            "leg-curl": { name: "レッグカール", part: "脚", difficulty: 1, hypertrophy: 3, env: ["gym"] },
+            "hip-thrust": { name: "ヒップスラスト", part: "脚", difficulty: 2, hypertrophy: 4, env: ["gym", "home"] },
+            "plank": { name: "プランク", part: "腹", difficulty: 1, hypertrophy: 2, env: ["home", "gym"] },
+            "side-plank": { name: "サイドプランク", part: "腹", difficulty: 2, hypertrophy: 2, env: ["home", "gym"] },
+            "crunch": { name: "クランチ", part: "腹", difficulty: 1, hypertrophy: 2, env: ["home", "gym"] },
+            "leg-raise": { name: "レッグレイズ", part: "腹", difficulty: 2, hypertrophy: 3, env: ["home", "gym"] },
+            "dead-bug": { name: "デッドバグ", part: "腹", difficulty: 2, hypertrophy: 2, env: ["home", "gym"] }
+        };
+
+        // 種目名からIDへのマッピング
+        const exerciseNameToId = {
+            "ベンチプレス": "bench-press", "ダンベルプレス": "dumbbell-press", "チェストプレス": "chest-press",
+            "インクラインプレス": "incline-press", "プッシュアップ": "push-up", "ラットプルダウン": "lat-pulldown",
+            "ラットプル": "lat-pulldown", "シーテッドロー": "seated-row", "ワンハンドロー": "one-hand-row",
+            "ダンベルロー": "one-hand-row", "ロウイング系": "seated-row", "ショルダープレス": "shoulder-press",
+            "アームカール": "arm-curl", "トライセプス種目": "triceps-extension", "トライセプスエクステンション": "triceps-extension",
+            "スクワット": "squat", "ブルガリアンスクワット": "bulgarian-squat", "レッグプレス": "leg-press",
+            "RDL": "rdl", "デッドリフト": "deadlift", "レッグカール": "leg-curl", "ヒップスラスト": "hip-thrust",
+            "プランク": "plank", "サイドプランク": "side-plank", "クランチ": "crunch", "レッグレイズ": "leg-raise",
+        };
+
+        // 目的に応じた難易度上限を取得
+        function getMaxDifficulty(goal) {
+            if (goal === 'health') return 2;  // 健康維持：初心者向け
+            if (goal === 'diet') return 3;    // ダイエット：中級者まで
+            return 5;                          // 筋肉増加：全種目OK
+        }
+
+        // 環境に適した種目をフィルタリング
+        function filterByEnvironment(exerciseId, env) {
+            const ex = exerciseData[exerciseId];
+            if (!ex) return true;
+            if (env === 'both') return true;
+            return ex.env.includes(env);
+        }
+
+        // 種目を選択（難易度・環境でフィルタリング）
+        function selectExercise(part, goal, env, excludeIds = []) {
+            const maxDiff = getMaxDifficulty(goal);
+            const candidates = Object.entries(exerciseData)
+                .filter(([id, ex]) =>
+                    ex.part === part &&
+                    ex.difficulty <= maxDiff &&
+                    filterByEnvironment(id, env) &&
+                    !excludeIds.includes(id)
+                )
+                .sort((a, b) => b[1].hypertrophy - a[1].hypertrophy); // 筋肥大効果順
+
+            return candidates.length > 0 ? candidates[0][0] : null;
+        }
+
+        // 代替種目を選択（難易度制限あり）
+        function selectAlternative(primaryId, goal, env) {
+            const primary = exerciseData[primaryId];
+            if (!primary) return null;
+
+            const maxDiff = getMaxDifficulty(goal);
+            const candidates = Object.entries(exerciseData)
+                .filter(([id, ex]) =>
+                    ex.part === primary.part &&
+                    id !== primaryId &&
+                    ex.difficulty <= maxDiff &&
+                    filterByEnvironment(id, env)
+                )
+                .sort((a, b) => b[1].hypertrophy - a[1].hypertrophy);
+
+            return candidates.length > 0 ? candidates[0][0] : null;
+        }
+
+        function linkifyExerciseName(name) {
+            const parts = name.split(' / ');
+            return parts.map(part => {
+                const trimmed = part.trim();
+                if (exerciseNameToId[trimmed]) {
+                    return `<a href="exercise.html?id=${exerciseNameToId[trimmed]}" class="exercise-link">${trimmed}</a>`;
+                }
+                for (const [key, id] of Object.entries(exerciseNameToId)) {
+                    if (trimmed.includes(key)) {
+                        return `<a href="exercise.html?id=${id}" class="exercise-link">${trimmed}</a>`;
+                    }
+                }
+                return trimmed;
+            }).join(' / ');
+        }
+
+        function getCardioPlan(input) {
+            const tiers = ['low', 'medium', 'high'];
+            let tier = input.cardioPref || 'medium';
+            if (input.sex === 'female' && input.goal === 'diet') {
+                const idx = tiers.indexOf(tier);
+                if (idx >= 0 && idx < tiers.length - 1) tier = tiers[idx + 1];
+            }
+            let sessionsPerWeek, minutesRange;
+            if (tier === 'low') { sessionsPerWeek = 1; minutesRange = '20'; }
+            else if (tier === 'medium') { sessionsPerWeek = 2; minutesRange = '20〜30'; }
+            else { sessionsPerWeek = 4; minutesRange = '20〜40'; }
+            return { tier, sessionsPerWeek, minutesRange };
+        }
+
+        // ====== ナビゲーション ======
+        backButton.addEventListener('click', () => {
+            if (currentStepIndex === 0) return;
+            currentStepIndex -= 1;
+            render();
+        });
+
+        nextButton.addEventListener('click', () => {
+            const stepId = steps[currentStepIndex];
+            if (stepId === 'welcome') { currentStepIndex = 1; render(); return; }
+            if (stepId === 'result') { clearState(); currentStepIndex = 1; render(); return; }
+            if (stepId === 'sex' && !userInput.sex) return;
+            if (stepId === 'goal' && !userInput.goal) return;
+            if (stepId === 'frequency' && !userInput.frequency) return;
+            if (stepId === 'environment' && !userInput.environment) return;
+            if (stepId === 'cardio' && !userInput.cardioPref) return;
+            if (currentStepIndex < steps.length - 1) { currentStepIndex += 1; render(); }
+        });
+
+        // 初期表示
+        loadState();
+        render();
+    </script>
 </body>
 </html>

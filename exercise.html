@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>種目詳細 - sumida</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px 16px;
+        }
+
+        .app {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8e8e8;
+            max-width: 800px;
+            width: 100%;
+            padding: 32px 28px 28px;
+            margin: 16px 0;
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #f5f5f5;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: #ebebeb;
+            color: #333;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: #e8e8e8;
+            margin-bottom: 24px;
+        }
+
+        .exercise-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .exercise-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .exercise-parts {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .part-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .part-badge.main {
+            background: #667eea;
+            color: #fff;
+        }
+
+        /* パラメータ表示 */
+        .params-section {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .param-box {
+            text-align: center;
+            padding: 16px 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+            min-width: 140px;
+        }
+
+        .param-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .param-stars {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .param-star {
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+
+        .param-star.filled {
+            color: #ffc107;
+        }
+
+        .param-star.filled.difficulty {
+            color: #f5576c;
+        }
+
+        .param-star.filled.hypertrophy {
+            color: #4facfe;
+        }
+
+        .param-value {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .image-section {
+            margin-bottom: 28px;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #f8f8f8;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .exercise-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            border-radius: 16px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            background: #fcfcfc;
+            margin-bottom: 16px;
+        }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .info-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .info-card-icon.tips {
+            background: #e8f4ff;
+        }
+
+        .info-card-icon.cautions {
+            background: #ffebe8;
+        }
+
+        .info-card-icon.alternatives {
+            background: #f0e8ff;
+        }
+
+        .info-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .info-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .info-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .info-card.tips .info-list li::before {
+            background: #4facfe;
+        }
+
+        .info-card.cautions .info-list li::before {
+            background: #f5576c;
+        }
+
+        .info-card.alternatives .info-list li::before {
+            background: #f093fb;
+        }
+
+        .alternatives-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .alternative-chip {
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            font-size: 0.9rem;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .alternative-chip:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .not-found-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .not-found-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .not-found-text {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #667eea;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #5569d6;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .app {
+                padding: 24px 18px 20px;
+                border-radius: 18px;
+            }
+
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .exercise-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <header class="app-header">
+            <div class="logo">sumida</div>
+            <a href="javascript:history.back()" class="back-link">← 戻る</a>
+        </header>
+
+        <div class="divider"></div>
+
+        <div id="content">
+            <!-- JavaScriptで描画 -->
+        </div>
+    </main>
+
+    <script>
+        // 画像ベースURL (Free Exercise DB)
+        const IMAGE_BASE_URL = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/";
+
+        // ====== 種目データ ======
+        // difficulty: 難易度 (1=初心者向け, 5=上級者向け)
+        // hypertrophy: 筋肥大効果 (1=低い, 5=高い)
+        const exercises = {
+            "bench-press": {
+                id: "bench-press",
+                name: "ベンチプレス",
+                part: "胸",
+                subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"],
+                difficulty: 3,
+                hypertrophy: 5,
+                imageId: "Barbell_Bench_Press_-_Medium_Grip",
+                tips: [
+                    "肩甲骨を寄せて胸を張り、アーチを作る",
+                    "バーは胸の少し下（乳首ライン付近）に下ろす",
+                    "足でしっかり床を踏んで体を安定させる",
+                    "下ろすときはゆっくり、上げるときは力強く押す"
+                ],
+                cautions: [
+                    "肘を90度以上に開くと肩を痛めやすい",
+                    "お尻をベンチから浮かせない",
+                    "手首を反らせすぎず、真っ直ぐに保つ"
+                ],
+                alternatives: ["dumbbell-press", "chest-press", "push-up"]
+            },
+            "dumbbell-press": {
+                id: "dumbbell-press",
+                name: "ダンベルプレス",
+                part: "胸",
+                subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"],
+                difficulty: 2,
+                hypertrophy: 4,
+                imageId: "Dumbbell_Bench_Press",
+                tips: [
+                    "肩甲骨を寄せて胸を張る",
+                    "ダンベルを胸の横に下ろし、弧を描くように押し上げる",
+                    "トップで軽くダンベルを近づけると収縮感が増す",
+                    "肘の角度は45〜75度程度を維持"
+                ],
+                cautions: [
+                    "ダンベルを下ろしすぎると肩に負担がかかる",
+                    "左右のバランスを意識して同時に動かす",
+                    "重すぎる重量は避け、コントロールできる重さで行う"
+                ],
+                alternatives: ["bench-press", "incline-press", "push-up"]
+            },
+            "chest-press": {
+                id: "chest-press",
+                name: "チェストプレス",
+                part: "胸",
+                subParts: ["大胸筋", "三角筋前部", "上腕三頭筋"],
+                difficulty: 1,
+                hypertrophy: 3,
+                imageId: "Lever_Chest_Press",
+                tips: [
+                    "シートの高さを調整し、グリップが胸の高さに来るようにする",
+                    "肩甲骨を寄せて胸を張った状態でスタート",
+                    "押すときに息を吐き、戻すときに吸う",
+                    "肘を伸ばしきらず、少し曲げた状態で止める"
+                ],
+                cautions: [
+                    "肩がすくまないように注意",
+                    "反動を使わずにゆっくり動作する",
+                    "グリップを握りすぎると前腕が疲れる"
+                ],
+                alternatives: ["bench-press", "dumbbell-press", "push-up"]
+            },
+            "incline-press": {
+                id: "incline-press",
+                name: "インクラインプレス",
+                part: "胸",
+                subParts: ["大胸筋上部", "三角筋前部", "上腕三頭筋"],
+                difficulty: 3,
+                hypertrophy: 4,
+                imageId: "Barbell_Incline_Bench_Press_-_Medium_Grip",
+                tips: [
+                    "ベンチの角度は30〜45度に設定",
+                    "バー/ダンベルは鎖骨の少し下あたりに下ろす",
+                    "肩甲骨を寄せて胸の上部を意識する",
+                    "フラットベンチより少し軽めの重量から始める"
+                ],
+                cautions: [
+                    "角度が急すぎると肩への負担が増える",
+                    "首に力を入れすぎない",
+                    "肩が前に出ないよう、胸を張り続ける"
+                ],
+                alternatives: ["bench-press", "dumbbell-press", "push-up"]
+            },
+            "push-up": {
+                id: "push-up",
+                name: "プッシュアップ",
+                part: "胸",
+                subParts: ["大胸筋", "三角筋前部", "上腕三頭筋", "体幹"],
+                difficulty: 2,
+                hypertrophy: 2,
+                imageId: "Push-Up",
+                tips: [
+                    "手幅は肩幅より少し広めに置く",
+                    "頭からかかとまで一直線を保つ",
+                    "胸を床に近づけるイメージで下ろす",
+                    "肘は体に対して45度くらいの角度で曲げる"
+                ],
+                cautions: [
+                    "腰が落ちたり反ったりしないよう体幹を固める",
+                    "首を前に突き出さない",
+                    "手首が痛い場合はプッシュアップバーを使用"
+                ],
+                alternatives: ["bench-press", "dumbbell-press", "chest-press"]
+            },
+            "lat-pulldown": {
+                id: "lat-pulldown",
+                name: "ラットプルダウン",
+                part: "背中",
+                subParts: ["広背筋", "大円筋", "上腕二頭筋"],
+                difficulty: 2,
+                hypertrophy: 4,
+                imageId: "Cable_Wide-Grip_Lat_Pulldown",
+                tips: [
+                    "胸を張り、やや後ろに体を傾ける",
+                    "肘を脇腹に向かって引き下ろすイメージ",
+                    "バーは鎖骨あたりまで引く",
+                    "肩甲骨を下げながら引くと背中に効きやすい"
+                ],
+                cautions: [
+                    "反動を使って引かない",
+                    "首の後ろに引くと肩を痛める可能性がある",
+                    "グリップを強く握りすぎると腕が先に疲れる"
+                ],
+                alternatives: ["seated-row", "one-hand-row"]
+            },
+            "seated-row": {
+                id: "seated-row",
+                name: "シーテッドロー",
+                part: "背中",
+                subParts: ["広背筋", "僧帽筋中部", "菱形筋", "上腕二頭筋"],
+                difficulty: 2,
+                hypertrophy: 4,
+                imageId: "Cable_Seated_Row",
+                tips: [
+                    "胸を張り、背筋を伸ばしてスタート",
+                    "肘を後ろに引き、肩甲骨を寄せる",
+                    "おへそに向かって引くイメージ",
+                    "戻すときもゆっくりコントロールする"
+                ],
+                cautions: [
+                    "体を後ろに倒しすぎない",
+                    "肩がすくまないように注意",
+                    "腰を丸めると腰痛の原因になる"
+                ],
+                alternatives: ["lat-pulldown", "one-hand-row"]
+            },
+            "one-hand-row": {
+                id: "one-hand-row",
+                name: "ワンハンドロー",
+                part: "背中",
+                subParts: ["広背筋", "菱形筋", "上腕二頭筋"],
+                difficulty: 2,
+                hypertrophy: 4,
+                imageId: "Dumbbell_Row",
+                tips: [
+                    "ベンチに片手と片膝をつき、体を安定させる",
+                    "背中を床と平行に保つ",
+                    "ダンベルを脇腹に向かって引き上げる",
+                    "肩甲骨を寄せることを意識する"
+                ],
+                cautions: [
+                    "体をひねって引かない",
+                    "肩を上げすぎない（僧帽筋に逃げる）",
+                    "腰をひねらないよう体幹を固定"
+                ],
+                alternatives: ["lat-pulldown", "seated-row"]
+            },
+            "shoulder-press": {
+                id: "shoulder-press",
+                name: "ショルダープレス",
+                part: "肩",
+                subParts: ["三角筋前部・中部", "上腕三頭筋", "僧帽筋上部"],
+                difficulty: 3,
+                hypertrophy: 4,
+                imageId: "Barbell_Shoulder_Press",
+                tips: [
+                    "背筋を伸ばし、体幹を固める",
+                    "肘は体の少し前で構える",
+                    "頭上に向かって真っ直ぐ押し上げる",
+                    "トップで肘を伸ばしきらない"
+                ],
+                cautions: [
+                    "腰を反らせすぎない",
+                    "首をすくめないよう肩を下げる意識",
+                    "重すぎる重量は肩関節を痛めやすい"
+                ],
+                alternatives: []
+            },
+            "arm-curl": {
+                id: "arm-curl",
+                name: "アームカール",
+                part: "腕",
+                subParts: ["上腕二頭筋", "前腕屈筋群"],
+                difficulty: 1,
+                hypertrophy: 3,
+                imageId: "Barbell_Curl",
+                tips: [
+                    "肘の位置を固定し、肘から先だけを動かす",
+                    "小指側を少し上に向けると収縮感が増す",
+                    "トップで1秒止めると効果的",
+                    "下ろすときもゆっくりコントロール"
+                ],
+                cautions: [
+                    "反動を使って振り上げない",
+                    "肩を前に出さない",
+                    "手首を巻き込みすぎない"
+                ],
+                alternatives: ["triceps-extension"]
+            },
+            "triceps-extension": {
+                id: "triceps-extension",
+                name: "トライセプスエクステンション",
+                part: "腕",
+                subParts: ["上腕三頭筋"],
+                difficulty: 2,
+                hypertrophy: 3,
+                imageId: "Dumbbell_Lying_Triceps_Extension",
+                tips: [
+                    "肘を耳の横に固定する",
+                    "肘から先だけを動かして伸ばす",
+                    "完全に伸ばしきると三頭筋に強い収縮",
+                    "下ろすときもゆっくり"
+                ],
+                cautions: [
+                    "肘が開かないように注意",
+                    "重すぎると肘関節に負担",
+                    "肩が上がらないようにする"
+                ],
+                alternatives: ["arm-curl"]
+            },
+            "squat": {
+                id: "squat",
+                name: "スクワット",
+                part: "脚",
+                subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス", "体幹"],
+                difficulty: 4,
+                hypertrophy: 5,
+                imageId: "Barbell_Squat",
+                tips: [
+                    "足幅は肩幅〜やや広め、つま先は少し外向き",
+                    "胸を張り、背中を真っ直ぐに保つ",
+                    "膝とつま先の向きを揃えて曲げる",
+                    "太ももが床と平行になるまでしゃがむ"
+                ],
+                cautions: [
+                    "膝が内側に入らないよう注意（ニーイン）",
+                    "かかとが浮かないようにする",
+                    "腰を丸めない（バットウィンク注意）"
+                ],
+                alternatives: ["leg-press", "bulgarian-squat"]
+            },
+            "bulgarian-squat": {
+                id: "bulgarian-squat",
+                name: "ブルガリアンスクワット",
+                part: "脚",
+                subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス"],
+                difficulty: 3,
+                hypertrophy: 4,
+                imageId: "Dumbbell_Single_Leg_Split_Squat",
+                tips: [
+                    "後ろ足をベンチに乗せ、前足に体重を乗せる",
+                    "上体はやや前傾させてバランスを取る",
+                    "前足の膝がつま先より前に出すぎないよう注意",
+                    "前足のかかとで地面を押して立ち上がる"
+                ],
+                cautions: [
+                    "バランスを崩しやすいので最初は軽い重量で",
+                    "膝が内側に入らないよう注意",
+                    "後ろ足に頼りすぎない"
+                ],
+                alternatives: ["squat", "leg-press"]
+            },
+            "leg-press": {
+                id: "leg-press",
+                name: "レッグプレス",
+                part: "脚",
+                subParts: ["大腿四頭筋", "大臀筋", "ハムストリングス"],
+                difficulty: 1,
+                hypertrophy: 4,
+                imageId: "Lever_45_Leg_Press",
+                tips: [
+                    "足幅は肩幅程度、足の位置で効く部位が変わる",
+                    "膝を深く曲げすぎず、90度程度でストップ",
+                    "押すときにかかとを意識すると臀筋に効く",
+                    "膝を伸ばしきらず、少し曲げた状態で止める"
+                ],
+                cautions: [
+                    "膝を完全に伸ばすとロックして危険",
+                    "腰がシートから浮かないようにする",
+                    "膝が内側に入らないよう注意"
+                ],
+                alternatives: ["squat", "bulgarian-squat"]
+            },
+            "rdl": {
+                id: "rdl",
+                name: "RDL（ルーマニアンデッドリフト）",
+                part: "脚",
+                subParts: ["ハムストリングス", "大臀筋", "脊柱起立筋"],
+                difficulty: 4,
+                hypertrophy: 4,
+                imageId: "Barbell_Romanian_Deadlift",
+                tips: [
+                    "膝は軽く曲げた状態を維持",
+                    "背中を真っ直ぐに保ちながらお尻を後ろに引く",
+                    "バーベル/ダンベルは体に沿わせて下ろす",
+                    "ハムストリングスのストレッチを感じたら戻る"
+                ],
+                cautions: [
+                    "背中を丸めない（腰痛の原因）",
+                    "膝を曲げすぎるとスクワットになる",
+                    "下ろしすぎると腰に負担がかかる"
+                ],
+                alternatives: ["deadlift", "leg-curl"]
+            },
+            "deadlift": {
+                id: "deadlift",
+                name: "デッドリフト",
+                part: "脚",
+                subParts: ["脊柱起立筋", "大臀筋", "ハムストリングス", "広背筋"],
+                difficulty: 5,
+                hypertrophy: 5,
+                imageId: "Barbell_Deadlift",
+                tips: [
+                    "足幅は腰幅程度、バーは足の中央の上に",
+                    "胸を張り、背中を真っ直ぐに保つ",
+                    "バーを体に沿わせて引き上げる",
+                    "立ち上がったら肩甲骨を軽く寄せる"
+                ],
+                cautions: [
+                    "絶対に背中を丸めない",
+                    "腕で引かず、脚と臀筋で持ち上げる",
+                    "首を反らせすぎない"
+                ],
+                alternatives: ["rdl", "squat"]
+            },
+            "leg-curl": {
+                id: "leg-curl",
+                name: "レッグカール",
+                part: "脚",
+                subParts: ["ハムストリングス"],
+                difficulty: 1,
+                hypertrophy: 3,
+                imageId: "Lever_Lying_Leg_Curl",
+                tips: [
+                    "パッドを足首の少し上にセット",
+                    "お尻が浮かないようにしっかり固定",
+                    "ゆっくりとかかとをお尻に近づける",
+                    "トップで1〜2秒止めると効果的"
+                ],
+                cautions: [
+                    "反動を使って勢いで曲げない",
+                    "腰を反らせない",
+                    "戻すときも力を抜かずコントロール"
+                ],
+                alternatives: ["rdl"]
+            },
+            "hip-thrust": {
+                id: "hip-thrust",
+                name: "ヒップスラスト",
+                part: "脚",
+                subParts: ["大臀筋", "ハムストリングス"],
+                difficulty: 2,
+                hypertrophy: 4,
+                imageId: "Barbell_Hip_Thrust",
+                tips: [
+                    "肩甲骨あたりをベンチに乗せる",
+                    "足は膝が90度になる位置に置く",
+                    "お尻を締めながら腰を持ち上げる",
+                    "トップで2秒キープすると効果的"
+                ],
+                cautions: [
+                    "腰を反らせすぎない",
+                    "あごを引いて首を守る",
+                    "膝が内側に入らないよう注意"
+                ],
+                alternatives: ["rdl"]
+            },
+            "plank": {
+                id: "plank",
+                name: "プランク",
+                part: "腹",
+                subParts: ["腹直筋", "腹横筋", "脊柱起立筋"],
+                difficulty: 1,
+                hypertrophy: 2,
+                imageId: "Front_Plank",
+                tips: [
+                    "肘は肩の真下に置く",
+                    "頭からかかとまで一直線を保つ",
+                    "お腹に力を入れて凹ませる",
+                    "呼吸を止めず、ゆっくり呼吸する"
+                ],
+                cautions: [
+                    "お尻が上がりすぎない、下がりすぎない",
+                    "腰が反らないように注意",
+                    "首を上げすぎない"
+                ],
+                alternatives: ["side-plank", "dead-bug"]
+            },
+            "side-plank": {
+                id: "side-plank",
+                name: "サイドプランク",
+                part: "腹",
+                subParts: ["腹斜筋", "腹横筋", "中臀筋"],
+                difficulty: 2,
+                hypertrophy: 2,
+                imageId: "Side_Plank",
+                tips: [
+                    "肘を肩の真下に置く",
+                    "体を横向きにし、一直線を保つ",
+                    "上側の手は腰に当てるか天井に伸ばす",
+                    "お尻が落ちないよう腹斜筋で支える"
+                ],
+                cautions: [
+                    "肩に負担がかからないよう肘の位置に注意",
+                    "体がねじれないようにする",
+                    "無理に長時間キープしない"
+                ],
+                alternatives: ["plank", "crunch"]
+            },
+            "crunch": {
+                id: "crunch",
+                name: "クランチ",
+                part: "腹",
+                subParts: ["腹直筋上部"],
+                difficulty: 1,
+                hypertrophy: 2,
+                imageId: "Crunch",
+                tips: [
+                    "腰は床につけたまま、肩甲骨を床から浮かせる",
+                    "おへそを覗き込むように上体を丸める",
+                    "手は胸の前か頭の後ろに軽く添える",
+                    "上げるときに息を吐く"
+                ],
+                cautions: [
+                    "首を引っ張らない",
+                    "反動を使わない",
+                    "腰を浮かせない"
+                ],
+                alternatives: ["leg-raise", "plank"]
+            },
+            "leg-raise": {
+                id: "leg-raise",
+                name: "レッグレイズ",
+                part: "腹",
+                subParts: ["腹直筋下部", "腸腰筋"],
+                difficulty: 2,
+                hypertrophy: 3,
+                imageId: "Lying_Leg_Raise",
+                tips: [
+                    "腰を床にしっかりつける",
+                    "脚を真っ直ぐ伸ばしたまま上げる",
+                    "90度まで上げたら、ゆっくり下ろす",
+                    "下ろすときに床につけず、少し浮かせる"
+                ],
+                cautions: [
+                    "腰が浮くと腰痛の原因になる",
+                    "脚を下ろすときが最も負荷が高い",
+                    "きつい場合は膝を曲げて行う"
+                ],
+                alternatives: ["crunch", "plank"]
+            },
+            "dead-bug": {
+                id: "dead-bug",
+                name: "デッドバグ",
+                part: "腹",
+                subParts: ["腹横筋", "腹直筋", "体幹全体"],
+                difficulty: 2,
+                hypertrophy: 2,
+                imageId: "Dead_Bug",
+                tips: [
+                    "仰向けで両手を天井に、両膝を90度に",
+                    "対角の手足を同時にゆっくり伸ばす",
+                    "腰が床から浮かないよう腹筋で押さえる",
+                    "伸ばしきったらゆっくり戻す"
+                ],
+                cautions: [
+                    "腰が反らないよう常に床につける意識",
+                    "動作はゆっくり、反動を使わない",
+                    "呼吸を止めない"
+                ],
+                alternatives: ["plank", "crunch"]
+            }
+        };
+
+        // 代替種目名の表示用マッピング
+        const exerciseNames = {
+            "bench-press": "ベンチプレス",
+            "dumbbell-press": "ダンベルプレス",
+            "chest-press": "チェストプレス",
+            "incline-press": "インクラインプレス",
+            "push-up": "プッシュアップ",
+            "lat-pulldown": "ラットプルダウン",
+            "seated-row": "シーテッドロー",
+            "one-hand-row": "ワンハンドロー",
+            "shoulder-press": "ショルダープレス",
+            "arm-curl": "アームカール",
+            "triceps-extension": "トライセプスエクステンション",
+            "squat": "スクワット",
+            "bulgarian-squat": "ブルガリアンスクワット",
+            "leg-press": "レッグプレス",
+            "rdl": "RDL",
+            "deadlift": "デッドリフト",
+            "leg-curl": "レッグカール",
+            "hip-thrust": "ヒップスラスト",
+            "plank": "プランク",
+            "side-plank": "サイドプランク",
+            "crunch": "クランチ",
+            "leg-raise": "レッグレイズ",
+            "dead-bug": "デッドバグ"
+        };
+
+        // ====== 画像アニメーション ======
+        let animationInterval = null;
+
+        function startImageAnimation(imageId) {
+            const imgElement = document.getElementById('exerciseImage');
+            if (!imgElement || !imageId) return;
+
+            const images = [
+                `${IMAGE_BASE_URL}${imageId}/0.jpg`,
+                `${IMAGE_BASE_URL}${imageId}/1.jpg`
+            ];
+
+            let currentIndex = 0;
+
+            // 最初の画像をロード
+            imgElement.src = images[0];
+            imgElement.onerror = () => {
+                // 画像が見つからない場合はプレースホルダーを表示
+                imgElement.parentElement.innerHTML = `
+                    <div class="image-placeholder">
+                        <div class="image-placeholder-icon">&#128170;</div>
+                        <p>画像を準備中です</p>
+                    </div>
+                `;
+            };
+
+            // アニメーション開始
+            animationInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % images.length;
+                imgElement.src = images[currentIndex];
+            }, 1000); // 1秒ごとに切り替え
+        }
+
+        function stopImageAnimation() {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+        }
+
+        // ====== ページ描画 ======
+        function render() {
+            const params = new URLSearchParams(window.location.search);
+            const exerciseId = params.get('id');
+            const contentEl = document.getElementById('content');
+
+            // 前のアニメーションを停止
+            stopImageAnimation();
+
+            if (!exerciseId || !exercises[exerciseId]) {
+                renderNotFound(contentEl, exerciseId);
+                return;
+            }
+
+            const ex = exercises[exerciseId];
+            document.title = `${ex.name} - sumida`;
+
+            contentEl.innerHTML = `
+                <div class="exercise-header">
+                    <h1 class="exercise-title">${ex.name}</h1>
+                    <div class="exercise-parts">
+                        <span class="part-badge main">${ex.part}</span>
+                        ${ex.subParts.map(p => `<span class="part-badge">${p}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div class="params-section">
+                    <div class="param-box">
+                        <div class="param-label">筋肥大効果</div>
+                        <div class="param-stars">
+                            ${[1,2,3,4,5].map(i => `<span class="param-star ${i <= ex.hypertrophy ? 'filled hypertrophy' : ''}">★</span>`).join('')}
+                        </div>
+                        <div class="param-value">${ex.hypertrophy} / 5</div>
+                    </div>
+                    <div class="param-box">
+                        <div class="param-label">難易度</div>
+                        <div class="param-stars">
+                            ${[1,2,3,4,5].map(i => `<span class="param-star ${i <= ex.difficulty ? 'filled difficulty' : ''}">★</span>`).join('')}
+                        </div>
+                        <div class="param-value">${ex.difficulty} / 5</div>
+                    </div>
+                </div>
+
+                <section class="image-section">
+                    <div class="image-container">
+                        ${ex.imageId
+                            ? `<img id="exerciseImage" class="exercise-image" alt="${ex.name}の動作" />`
+                            : `<div class="image-placeholder">
+                                <div class="image-placeholder-icon">&#128170;</div>
+                                <p>画像を準備中です</p>
+                               </div>`
+                        }
+                    </div>
+                </section>
+
+                <section class="info-section">
+                    <div class="info-card tips">
+                        <div class="info-card-header">
+                            <div class="info-card-icon tips">&#9989;</div>
+                            <h2 class="info-card-title">意識すること</h2>
+                        </div>
+                        <ul class="info-list">
+                            ${ex.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="info-card cautions">
+                        <div class="info-card-header">
+                            <div class="info-card-icon cautions">&#9888;</div>
+                            <h2 class="info-card-title">気を付けること</h2>
+                        </div>
+                        <ul class="info-list">
+                            ${ex.cautions.map(c => `<li>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    ${ex.alternatives && ex.alternatives.length > 0 ? `
+                        <div class="info-card alternatives">
+                            <div class="info-card-header">
+                                <div class="info-card-icon alternatives">&#128260;</div>
+                                <h2 class="info-card-title">代替種目</h2>
+                            </div>
+                            <div class="alternatives-list">
+                                ${ex.alternatives.map(alt => {
+                                    const name = exerciseNames[alt] || alt;
+                                    if (exercises[alt]) {
+                                        return `<a href="exercise.html?id=${alt}" class="alternative-chip">${name}</a>`;
+                                    }
+                                    return `<span class="alternative-chip">${name}</span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </section>
+            `;
+
+            // 画像アニメーション開始
+            if (ex.imageId) {
+                startImageAnimation(ex.imageId);
+            }
+        }
+
+        function renderNotFound(contentEl, id) {
+            contentEl.innerHTML = `
+                <div class="not-found">
+                    <div class="not-found-icon">&#128566;</div>
+                    <h1 class="not-found-title">種目が見つかりません</h1>
+                    <p class="not-found-text">
+                        ${id ? `「${id}」という種目は登録されていません。` : 'URLにIDが指定されていません。'}
+                    </p>
+                    <a href="index.html" class="btn-primary">診断ページへ戻る</a>
+                </div>
+            `;
+        }
+
+        // ページ離脱時にアニメーション停止
+        window.addEventListener('beforeunload', stopImageAnimation);
+
+        // 初期化
+        render();
+    </script>
+</body>
+</html>
